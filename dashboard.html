@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: white;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+    </style>
+
+</head>
+
+<body class="px-6">
+
+    <!-- HEADER -->
+    <div class="flex justify-between mt-6">
+        <h1 class="text-2xl">Dashboard - {{ college }}</h1>
+        <a href="/" class="bg-cyan-500 px-4 py-2 rounded">Back</a>
+    </div>
+
+    <!-- MAP -->
+    <div id="map" data-lat="{{ lat }}" data-lon="{{ lon }}" class="h-96 mt-6 rounded">
+    </div>
+
+    <!-- FOOD -->
+    <h3 class="mt-6">🍱 Food</h3>
+    {% for item in data.food %}
+    <div class="card">{{ item.name }} - {{ item.contact }}</div>
+    {% endfor %}
+
+    <!-- ROOMS -->
+    <h3 class="mt-6">🏠 Rooms</h3>
+    {% for item in data.rooms %}
+    <div class="card">{{ item.name }} - {{ item.contact }}</div>
+    {% endfor %}
+
+    <!-- HOSPITAL -->
+    <h3 class="mt-6">🏥 Hospital</h3>
+    {% for item in data.hospital %}
+    <div class="card">{{ item.name }} - {{ item.contact }}</div>
+    {% endfor %}
+
+    <!-- POLICE -->
+    <h3 class="mt-6">🚓 Police</h3>
+    {% for item in data.police %}
+    <div class="card">{{ item.name }} - {{ item.contact }}</div>
+    {% endfor %}
+
+    <!-- BUS -->
+    <h3 class="mt-6">🚌 Bus</h3>
+    {% for item in data.bus %}
+    <div class="card">{{ item.name }} - {{ item.contact }}</div>
+    {% endfor %}
+
+    <!-- MAP SCRIPT -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        var mapDiv = document.getElementById("map");
+
+        var lat = parseFloat(mapDiv.dataset.lat);
+        var lon = parseFloat(mapDiv.dataset.lon);
+
+        var map = L.map('map').setView([lat, lon], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        L.marker([lat, lon]).addTo(map)
+            .bindPopup("🏫 {{ college }}")
+            .openPopup();
+    </script>
+
+</body>
+
+</html>
